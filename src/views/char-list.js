@@ -21,7 +21,7 @@ export class CharList extends connect(store)(LitElement) {
             limit: {type: Number},
             hash: {type: String},
             baseUrl: {type: String},
-            searchValue: { type: String }
+            searchValue: { type: String },
         };
     }
     constructor() {
@@ -54,6 +54,20 @@ export class CharList extends connect(store)(LitElement) {
         Router.go(path)
     }
 
+    showData() {
+        return html`
+        <div class="cards">
+            ${map(this.characters, (character) => html`
+            <div class="card" @click=${() => this.openDetail(character)} href="/detail:${character.id}">
+                <img class="character-portrait" src="${character.thumbnail.path}/landscape_incredible.${character.thumbnail.extension}" alt="">
+                <div class="character-data" >
+                   <h3>${character.name}</h3>
+                </div>
+            </div>`)}
+        </div>
+        <data-paginator limit="${this.limit}" total="${this.characters.total}"></data-paginator>
+        `
+    }
     
     render() {
         return html`
@@ -62,16 +76,7 @@ export class CharList extends connect(store)(LitElement) {
         
         <div class="main-list">
         
-            <div class="cards">
-                ${map(this.characters, (character) => html`
-                <div class="card" @click=${() => this.openDetail(character)} href="/detail:${character.id}">
-                    <img class="character-portrait" src="${character.thumbnail.path}/landscape_incredible.${character.thumbnail.extension}" alt="">
-                    <div class="character-data" >
-                    <h3>${character.name}</h3>
-                    </div>
-                </div>`)}
-            </div>
-            <data-paginator limit="${this.limit}" total="${this.characters.total}"></data-paginator>
+            ${this.showData()}
         </div>
         `;
     }
@@ -133,6 +138,36 @@ export class CharList extends connect(store)(LitElement) {
         .character-data h3 {
             margin: 0;
             font-size: 17px;
+        }
+        #spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #spinner::after {
+            content: "";
+            width: 80px;
+            height: 80px;
+            border: 2px solid #f3f3f3;
+            border-top: 3px solid #f25a41;
+            border-radius: 100%;
+            will-change: transform;
+            animation: spin 1s infinite linear
+            }
+
+            @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         @media (min-width: 1024px) {

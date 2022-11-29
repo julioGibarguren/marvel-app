@@ -17,12 +17,13 @@ export class getData extends connect(store)(LitElement) {
             publicKey: {type: String},
             privateKey: {type: String},
             hash: { type: String }
+            
         };
     }
     constructor() {
         super()
-        this.publicKey = "d3470449f460f26ccbafa3c43a0123bd",
-        this.privateKey = "1eb6053b31ca156516099751c4ed83b0b28608e0",
+        this.publicKey = import.meta.env.VITE_PUBLIC_KEY,
+        this.privateKey = import.meta.env.VITE_PRIVATE_KEY,
         this.hash = Md5.hashStr(this.timeStamp() + this.privateKey + this.publicKey )
     }
 
