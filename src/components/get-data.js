@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement } from 'lit';
 import {Md5} from 'ts-md5';
 import { connect } from 'pwa-helpers';
 import { store } from '../store/store';
@@ -37,12 +37,14 @@ export class getData extends connect(store)(LitElement) {
         }));
     }
 
-    getData() {
-        fetch(this.endpointUrl())
-            .then(response => response.json())
-            .then(res => {
-              this._sendData(res.data.results)
-        }) 
+    async getData() {
+        try {
+            const response = await fetch(this.endpointUrl())
+            const toJson = await response.json()
+            this._sendData(toJson.data.results)
+        } catch(e) {
+            console.log("Something goes wrong", e)
+        }
     }
 
     endpointUrl() {

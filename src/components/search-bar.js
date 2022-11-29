@@ -3,7 +3,7 @@ import { LitElement, html } from 'lit';
 export class SearchBar extends LitElement {
     static get properties() {
         return {
-            searhFilter: { type: String }
+            searchValue: { type: String }
         }
     }
 
@@ -13,7 +13,7 @@ export class SearchBar extends LitElement {
     }
 
     firstUpdated() {
-        this.searhFilter = this.shadowRoot.querySelector("#form").value
+        this.searchValue = this.shadowRoot.querySelector("#form").value
     }
 
     sendValue() {
@@ -23,6 +23,7 @@ export class SearchBar extends LitElement {
 
     render() {
         return html`
+            <get-data baseUrl="http://gateway.marvel.com/v1/public/characters?nameStartWith=${this.searchValue}"  limit="${this.limit}"></get-data>
             <input type="text" id="form">
             <button @click="${this.sendValue}">search</button>
         `;

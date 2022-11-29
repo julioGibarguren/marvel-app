@@ -10,7 +10,7 @@ export class CharDetail extends  connect(store)(LitElement) {
     static get properties() {
         return {
             hero: { type: Object },
-            limit: { type: Number}
+            limit: { type: Number},
         };
     }
 
@@ -18,18 +18,19 @@ export class CharDetail extends  connect(store)(LitElement) {
         super()
         window.scrollTo(0,0) 
         this.limit = 30
+        if(!this.hero) {
+            console.log
+        }
     }
 
     stateChanged(state) {
         this.hero = state.hero;  
       }
 
-    render() {
-        return html`
-        <app-header></app-header>
-        
-        <div class="hero-detail">
-            <div class="hero-data">
+    listTemplate() {
+        const isEmpty = Object.keys(this.hero).length === 0;
+        if(!isEmpty) {
+            return html`
                 <div class="hero-data-heading">
                     <img class="hero-thumbnail" src="${this.hero.thumbnail.path}/landscape_xlarge.${this.hero.thumbnail.extension}" >
                     <div class="main-data">
@@ -45,6 +46,19 @@ export class CharDetail extends  connect(store)(LitElement) {
                     <h3>Stories</h3>
                     <hero-resources limit="${this.limit}" resource="stories"></hero-resources>
                 </div>
+            `
+        } else {
+            window.location.href="/"
+        }
+    }
+
+    render() {
+        return html`
+        <app-header></app-header>
+
+        <div class="hero-detail">
+            <div class="hero-data">
+                ${this.listTemplate()}
             </div>
         </div>
         `; 

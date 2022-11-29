@@ -3,12 +3,12 @@ import {map} from 'lit/directives/map.js';
 import { connect } from 'pwa-helpers';
 import { store } from '../store/store';
 import { hero } from '../store/actions';
+import { Router } from '@vaadin/router';
+
 import '../components/get-data';
 import '../components/data-paginator';
 import '../components/header';
 import '../components/search-bar';
-
-import { Router } from '@vaadin/router';
 
 
 export class CharList extends connect(store)(LitElement) {
@@ -21,14 +21,18 @@ export class CharList extends connect(store)(LitElement) {
             characters: { type: Array},
             limit: {type: Number},
             hash: {type: String},
+            baseUrl: {type: String},
+            searchValue: { type: String }
         };
     }
     constructor() {
         super()
         this.characters = [],
         this.limit = 50,
+        this.baseUrl = "http://gateway.marvel.com/v1/public/characters?"
         this.getData()
     }
+
 
     stateChanged(state) {
        this.hero = state.hero;
@@ -45,12 +49,17 @@ export class CharList extends connect(store)(LitElement) {
         })
     }
 
-    
+    openDetail(character) {
+        let path = `/detail:${character.id}`  
+        store.dispatch(hero(character));
+        Router.go(path)
+    }
 
+    
     render() {
         return html`
         <app-header ></app-header>
-        <get-data baseUrl="http://gateway.marvel.com/v1/public/characters?"  limit="${this.limit}"></get-data>
+        <get-data baseUrl="${this.baseUrl}"  limit="${this.limit}"></get-data>
         
         <div class="main-list">
         
@@ -68,11 +77,7 @@ export class CharList extends connect(store)(LitElement) {
         `;
     }
 
-    openDetail(character) {
-        let path = `/detail:${character.id}`  
-        store.dispatch(hero(character));
-        Router.go(path)
-    }
+    
         
     static styles = [
         css `
@@ -80,7 +85,7 @@ export class CharList extends connect(store)(LitElement) {
             margin: 0 auto;
             padding: 2rem;
         }
-        .search-bar-container {
+        .search-container {
             position: fixed;
             left: 0px;
             right: 0px;
