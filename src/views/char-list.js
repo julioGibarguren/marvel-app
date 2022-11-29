@@ -8,7 +8,6 @@ import { Router } from '@vaadin/router';
 import '../components/get-data';
 import '../components/data-paginator';
 import '../components/header';
-import '../components/search-bar';
 
 
 export class CharList extends connect(store)(LitElement) {
