@@ -18,9 +18,6 @@ export class CharDetail extends  connect(store)(LitElement) {
         super()
         window.scrollTo(0,0) 
         this.limit = 30
-        if(!this.hero) {
-            console.log
-        }
     }
 
     stateChanged(state) {

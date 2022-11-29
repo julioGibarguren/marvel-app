@@ -34,7 +34,6 @@ export class HeroResources extends connect(store)(LitElement) {
     getData() {
         this.addEventListener('ApiData', (e) => {
             this.items = e.detail.data
-            console.log(e)
         })
     }
 

@@ -43,7 +43,7 @@ export class getData extends connect(store)(LitElement) {
             const toJson = await response.json()
             this._sendData(toJson.data.results)
         } catch(e) {
-            console.log("Something goes wrong", e)
+            console.log("Something wrong happens!", e)
         }
     }
 
